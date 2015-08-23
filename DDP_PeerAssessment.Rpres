@@ -1,0 +1,98 @@
+<style>
+.slide2_5 {
+    color: navy;
+    background-color: #E8E8E8;
+    width:120%;
+    border: solid 1pt orange;
+}
+</style>
+
+Coursera.org - Data Science Specialization
+Developing Data Products - Peer Assessment
+========================================================
+author: by Sergio Vicente
+date: Aug. 2015
+font-family: 'Serif'
+transition: zoom
+transition-speed: slow
+autosize: true
+
+
+The "Normal Plot App" insight
+========================================================
+class: slide2_5
+
+This application sprang up in the idea of providing a simple tool to show
+Normal Distribution and its probability calculus to novice students in Statistics.
+
+Along some courses I have ministered, I took notice that some people have trouble to understand its use to solve simple problems, like I will show you along next slides.
+
+- <small>[<a target="_blank" href="https://svicente99.shinyapps.io/normalDist" class="lnk">Link to Shiny App</a>]</small>
+A typical problem
+========================================================
+class: slide2_5
+
+Suppose that a product made in an industry has this weight following a normal distribution with average equals to 20g and standard deviation, 4g.
+And it's being asked to find the probability of an article randomly selected have your weight:
+
+- a) Between 16 and 22 grams;
+- b) Between 22 and 25 grams;
+- c) Above of 23 grams.
+
+Normal Distribution Plot
+========================================================
+class: slide2_5
+
+Using **R** to plot normal curve:
+<small>
+```{r,eval=FALSE,width=1500}
+mean=20; sd=4
+x <- seq(-4,4,length=100)*sd + mean
+f <- dnorm(x,mean,sd)
+plot(x, f, type="n", xlab="X values", ylab="", main="Normal Distribution - Weight Product", axes=FALSE)
+box(lwd=3, lty=2, col='#e0e0e0')
+```
+</small>
+And to show probability area under normal function:
+<small>
+```{r,eval=FALSE,width=1500}
+i <- x >= low_lim & x <= upp_lim
+lines(x, hx)
+polygon(c(low_lim,x[i],upp_lim), c(0,hx[i],0), col="red") 
+```
+</small>
+
+Plot to demonstrate (a) problem solution
+========================================================
+class: slide2_5
+title: false
+
+Plotting the solution to item (b) of that typical problem:
+
+<center>
+```{r,echo=FALSE}
+mean=20; sd=4
+low_lim=22; upp_lim=25
+x <- seq(-4,4,length=100)*sd + mean
+f <- dnorm(x,mean,sd)
+area <- round(pnorm(upp_lim, mean, sd) - pnorm(low_lim, mean, sd),4)
+txtArea <- paste("P[",low_lim," < X < ",upp_lim,"] = ",area)
+
+plot(x, f, type="n", xlab=txtArea, ylab="", main="Normal Distribution - Weight's Product", axes=FALSE)
+box(lwd=3, lty=2, col='#e0e0e0')
+i <- x >= low_lim & x <= upp_lim
+lines(x, f)
+polygon(c(low_lim,x[i],upp_lim), c(0,f[i],0), col="red") 
+
+arrows(mean, 0, mean, 1, col = "#c0c0c0", lty=2, lwd=2)
+axis(1, at=seq(5, 35, 5), pos=0)
+
+```
+</center>
+
+<div style="font-size:18pt;margin-top:-15px;">
+The red area represents the density of probability between `r low_lim` and `r upp_lim`, e.g., <b>`r area`</b>.
+</div>
+
+<!-- Thanks to Andy Lions for his article, published on
+http://rstudio-pubs-static.s3.amazonaws.com/27777_55697c3a476640caa0ad2099fe914ae5.html#/ -->
