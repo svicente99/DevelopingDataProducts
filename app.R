@@ -14,28 +14,36 @@
 server <- function(input, output, session) {
 
   observe({
+
 	    # Change both the mean and the standard deviation, if user's clicked in "N(0,1)"
   		if(input$chkNorm01) {
 		    updateTextInput(session, "mean", value = 0);
 		    updateTextInput(session, "std",  value = 1)
   		}
-  		
-        mu <- as.numeric(input$mean)
-        sd <- as.numeric(input$std)
-        stp <- if(sd<10)  1 else 10
-        # Control the value, min, max, and step.
-        # The range is limited to six sigma. The initial range (area) is 20% around mean.
-        vMin <- floor(mu-6*sd);    vMax <- floor(mu+6*sd)
+  			
+		if(input$mean=="") 
+			updateTextInput(session, "mean", value = 0)
+		if(input$std == "") 
+			updateTextInput(session, "std", value = 1)
+		
+		mu <- as.numeric(input$mean)
+		sd <- as.numeric(input$std)
+		stp <- if(sd<10)  1 else 10
+
+	    # Control the value, min, max, and step.
+	    # The range is limited to six sigma. The initial range (area) is 20% around mean.
+	    vMin <- floor(mu-6*sd);    vMax <- floor(mu+6*sd)
 		if(mu!=0)  { inf <- as.numeric(mu*0.8); sup <- as.numeric(mu*1.2) }
-	    else       { inf <- -1; sup<- 1 }
-        updateSliderInput(session, "limits", value = c(inf,sup), 
-         min = vMin, max = vMax, step = stp)
+		else       { inf <- -1; sup<- 1 }
+	    updateSliderInput(session, "limits", value = c(inf,sup), 
+	     min = vMin, max = vMax, step = stp)
       })
 
   output$distPlot <- renderPlot({
   
   	# get values from user interface (UI)
 	mean=as.numeric(input$mean); sd=as.numeric(input$std)
+
 	low_lim=as.numeric(input$limits[1])
 	upp_lim=as.numeric(input$limits[2])
 
@@ -61,9 +69,9 @@ server <- function(input, output, session) {
 	mtext(result, 3, cex=1.5, font=2)
 	
 	# show X axis, according to min and max limits
-    vMin <- floor(mean-6*sd)
-    vMax <- floor(mean+6*sd)
-    step <- if(sd<10)  1 else 10
+	vMin <- floor(mean-6*sd)
+	vMax <- floor(mean+6*sd)
+	step <- if(sd<10)  1 else 10
 	axis(1, at=seq(vMin, vMax, step), pos=0)
   })
 }
@@ -74,20 +82,30 @@ ui <- fluidPage(
   	
   	# User interface controls
     sidebarLayout(
-    sidebarPanel(
-    	p("For your normal distribution, please, fill these values as data input:"),	
-    	textInput(inputId="mean", label = "Mean (Average)", value=100),
-		textInput(inputId="std", label = "Standard Deviation", value=15),
-        sliderInput("limits", label = h4("Probability Area Limits"), 
-        	min = 0, max = 200, value = c(100-20, 100+20)),
-		checkboxInput("chkNorm01", "Normal 0-1 ('Standard')", FALSE),
-        tags$head(
-	    	tags$style(type="text/css", "#mean {width: 80px}"),
-	    	tags$style(type="text/css", "#std  {width: 80px}")
-	    )
-    ),
-    mainPanel(plotOutput("distPlot"))
-  )
+	    sidebarPanel(
+			p("For your normal distribution, please, fill these values as data input:"),	
+			textInput(inputId="mean", label = "Mean or Average (mu)", value=100),
+			textInput(inputId="std", label = "Standard Deviation (sigma)", value=15),
+			sliderInput("limits", label = h4("Probability Area Limits"), 
+				min = 0, max = 200, value = c(100-20, 100+20)),
+			checkboxInput("chkNorm01", "Normal 0-1 ('Standard')", FALSE),
+			tags$head(
+				tags$style(type="text/css", "#mean {width: 80px}"),
+				tags$style(type="text/css", "#std  {width: 80px}")
+	    		)
+    	),
+    
+		mainPanel(
+		   	tabsetPanel(
+			    tabPanel("Plot", plotOutput("distPlot")), 
+			    tabPanel("Help", htmlOutput("help"),
+			    	tags$div(id="help", 
+			    	  HTML("<iframe id='ifrHelp' src='help.html' height='350' width='600'></iframe>")
+			    	)
+			    )
+			)
+		)
+	)
 )
 
 shinyApp(ui = ui, server = server)
@@ -96,7 +114,7 @@ shinyApp(ui = ui, server = server)
 # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 
 # References I've used to write this code:
-# ---------------------------------------
+# --------------------------------------- (in order of development)
 
 # Normal Probability plot:
 # http://www.statmethods.net/advgraphs/probability.html
@@ -115,3 +133,9 @@ shinyApp(ui = ui, server = server)
 
 # Changing the values of inputs from the server
 # http://shiny.rstudio.com/gallery/update-input-demo.html
+
+# Application layout guide
+# http://shiny.rstudio.com/articles/layout-guide.html
+
+# Customize your UI with HTML
+# http://shiny.rstudio.com/articles/html-tags.html
