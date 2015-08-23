@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Help Documentation - Normal Dist App</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+$(function() {
+  $( "#accordion" ).accordion({ 
+	  heightStyle: "content" 
+	})
+});
+</script>
+<style type="text/css">
+.container {height:90%;}
+h3 {font-family:Verdana,sans-serif; font-weight:bolder; font-size:90%;}
+ul {background-color:#EFFBF8; padding:0; margin-top:-5px; margin-bottom:-5px;}
+li {font-size:75%;}
+ol, ol.li {background-color:#E0F8F7; padding:0; margin-top:-5px; margin-bottom:-5px;}
+blockquote {width:92%;}
+</style>
+</head>
+<body style="font-family:Arial,Helvetica,sans-serif;font-size:0.9em;">
+<div class="container">
+<div id="accordion">
+<h3>Getting Started</h3>
+<div>
+   <ul>
+	<li>First, you need to fill normal distribution parameters: mean and standard deviation.</li> 
+	<li>After, you may inform to the App 
+	  lower and upper area limits you want to obtain probability value of your Normal variable.<br/>
+ 	By default it's set between -1 e +1 standard deviation 
+	(sigma). Modify them according your case, using the slider control.</li>
+	<br/>
+	<li>If you need to calculate the probability of standardized Normal, just click on <var>"Normal 0-1"</var> check box. The App will change
+	"mean" to 0 and "sigma" to 1. (The limits will show 68,27%, that it is area under -1 e +1 sigma.)</li>
+
+	<li>To obtain the probability of only one side of the curve:<br/> <var> P[ X&gt;x ]</var> or <var>P[ X&lt;x ] </var><br/>
+	just slide one of the arrows to left or right outbound.</li>
+   </ul>
+</div>
+
+<h3>Motivation</h3>
+<div>
+   <ul>
+	<li>My insight to write this application was to aid my students (College and free Statistics courses) to comprehend Normal distribution, your general form and the
+Probability calculus when are given lower or upper limits (or both).<br/> Some <strong>EXAMPLES</strong> of its use can be demonstrated to solve simple problems like these:</li>
+   </ul>
+   <blockquote>
+   <ol>
+	<li>A radar unit is used to measure speed of cars on a motorway. 
+The speeds are normally distributed with a mean of 90 km/hr and a standard deviation of 10 km/hr. 
+What is the probability that a car picked at random is travelling at more than 100 km/hr? 
+	</li>
+	<li>Entry to a certain University is determined by a national test. 
+The scores on this test are normally distributed with a mean of 500 and a standard deviation of 100. 
+Tom wants to be admitted to this university and he knows that he must score better than at least 70% of the students 
+who took the test. Tom takes the test and scores 580. Will he be admitted to this university? 
+	</li>
+   </ol>
+   </blockquote>
+   
+   <ul>
+   <li>SOLUTIONS:</li>
+   </ul>
+   <blockquote>
+   <ol>
+	<li>Fill <em>mu</em> and <em>sigma</em>, respectively, to 90 and 10. Slide limits to: inf=100, sup=right outbound.
+   The result shows to you: 0.1587  (or P[X&gt;100].</li>
+	<li>Fill <em>mu</em> and <em>sigma</em>, respectively, to 90 and 10. Slide inferior limit to left outbound (-100); and go sliding upper until
+overpass 0.7. When it reaches 560, the probability is 0.7257
+   Thus, Tom will be admitted. Because your score is better than 70% of the students (in fact, 580 is better than 77%).</li>
+   </ol>
+   </blockquote>
+
+</div>
+
+<h3>Features, Limitations and Evolution</h3>
+<div>
+   <ul>
+<li>This App <span style="color:red">isn't still accepting float values</span>. It will be enhanced to manipulate them, as soon as possible.</li>
+<li><strong style="color:red">Don't blank parameter values.</strong> It causes a critical error. In this case, just reload App (F5).<br/>
+    (A workaround solution is being analyzed to correct this problem...)
+<li>X axis extremities are bound to six sigma (to down and up).</li> 
+<em>Evolution:</em>
+<li>Be more precise when getting areas of only one tail of the curve. E.g., write the expression above plot as <var>P[ X&gt;x ]</var> or <var>P[ X&lt;x ]</var>.</li>
+<li>Fine tuning to lower and upper limits. (The scale allows only values onto the steps.)</li>
+   </ul>
+</div>
+
+<h3>References</h3>
+<div>
+   <ul>
+	<li><a target="_blank" href="https://en.wikipedia.org/wiki/Normal_distribution">Wikipedia - Normal Distribution</a>
+	<li><a target="_blank" href="http://mathworld.wolfram.com/NormalDistribution.html">Wolfram MathWorld - NormalDistribution</a>
+	<li><a target="_blank" href="http://www.statmethods.net/advgraphs/probability.html">Quick-R - Probability Plots for Teaching and Demonstration</a>
+    </ul>
+</div>
+
+</div><!-- end of accordion -->
+</div>
+</body>
+</html>
